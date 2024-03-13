@@ -1,5 +1,6 @@
 import 'package:arkit_plugin/arkit_plugin.dart';
 import 'package:flutter/material.dart';
+import 'package:testing_app/home_page.dart';
 import 'package:vector_math/vector_math_64.dart';
 
 void main() {
@@ -18,11 +19,12 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
       ),
-      home: MyHomePage(),
+      home: HomeScreen(),
     );
   }
 }
 
+// only iOS working code
 class MyHomePage extends StatelessWidget {
   MyHomePage({super.key});
 

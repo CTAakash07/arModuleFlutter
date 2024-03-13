@@ -8,6 +8,8 @@
 	<string>Testing App</string>
     <key>NSCameraUsageDescription</key>
     <string>Describe why your app needs AR here.</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>For App usage purpose.</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>

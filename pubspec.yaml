@@ -13,6 +13,8 @@ dependencies:
 #  arkit_plugin: ^1.0.7
   arkit_plugin:
     git: https://github.com/olexale/arkit_flutter_plugin.git
+  image_picker: ^1.0.7
+  permission_handler: ^11.3.0
 
 dev_dependencies:
   flutter_test:
