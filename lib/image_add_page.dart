@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:testing_app/api_helper_page.dart';
@@ -157,6 +158,7 @@ class imageAddPage extends State<ImageAddPage> {
                 child: TextFormField(
                   style: const TextStyle(color: Colors.black),
                   controller: sellerPhone,
+                  keyboardType: TextInputType.number,
                   decoration: InputDecoration(
                     hintText: "Seller Phone",
                     labelText: isPhone ? "Seller Phone" : null,
@@ -277,6 +279,7 @@ class imageAddPage extends State<ImageAddPage> {
                 child: TextFormField(
                   style: const TextStyle(color: Colors.black),
                   controller: itemPrice,
+                  keyboardType: TextInputType.number,
                   decoration: InputDecoration(
                     hintText: "item Price",
                     labelText: isPrice ? "item Price" : null,

@@ -21,6 +21,7 @@ dependencies:
   fluttertoast: ^8.2.4
   firebase_storage: ^11.6.9
   cloud_firestore: ^4.15.8
+  augmented_reality_plugin: ^4.0.1
 
 dev_dependencies:
   flutter_test:

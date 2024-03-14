@@ -17,7 +17,7 @@ class _ItemsListWidgetState extends State<ItemsListWidget> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (c) => ItemDetailsPage()));
+        Navigator.push(context, MaterialPageRoute(builder: (c) => ItemDetailsPage(clickedData: widget.itemData!,)));
       },
       splashColor: Colors.deepPurpleAccent.shade100,
       child: Padding(
