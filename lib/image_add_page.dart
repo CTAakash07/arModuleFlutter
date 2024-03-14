@@ -1,7 +1,11 @@
 import 'dart:typed_data';
-import 'package:permission_handler/permission_handler.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:testing_app/api_helper_page.dart';
+import 'package:firebase_storage/firebase_storage.dart' as fireBaseStore;
+import 'package:testing_app/home_page.dart';
 
 class ImageAddPage extends StatefulWidget {
   const ImageAddPage({Key? key}) : super(key: key);
@@ -25,6 +29,7 @@ class imageAddPage extends State<ImageAddPage> {
   bool isDescription = false;
   TextEditingController itemPrice = TextEditingController();
   bool isPrice = false;
+  String downLoadUrlUploadImage = "";
 
   @override
   Widget build(BuildContext context) {
@@ -55,8 +60,14 @@ class imageAddPage extends State<ImageAddPage> {
           Padding(
             padding: const EdgeInsets.all(4.0),
             child: IconButton(
-                onPressed: () {},
-                icon: Icon(
+                onPressed: () {
+
+                  if (isUploading != true) {
+                    validateFrom();
+                  }
+
+                },
+                icon: const Icon(
                   Icons.cloud_upload,
                   color: Colors.white,
                 )),
@@ -305,7 +316,7 @@ class imageAddPage extends State<ImageAddPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.deepPurpleAccent,
-        title: Text(
+        title: const Text(
           "Add New Item",
           style: TextStyle(
             color: Colors.white,
@@ -326,12 +337,12 @@ class imageAddPage extends State<ImageAddPage> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(top: 50,right: 10,left: 10),
+              padding: const EdgeInsets.only(top: 50,right: 10,left: 10),
               child: ElevatedButton(
                   onPressed: () {
                     showDailog();
                   },
-                  child: Center(
+                  child: const Center(
                     child: Text(
                       "Add New Item",
                       style: TextStyle(
@@ -412,6 +423,8 @@ class imageAddPage extends State<ImageAddPage> {
           imageFileUint8List = await pickedImage.readAsBytes();
 
           // Remove background
+          imageFileUint8List = await ApiHelper().removeBackGround(imagePath);
+
           setState(() {
             imageFileUint8List;
           });
@@ -436,7 +449,10 @@ class imageAddPage extends State<ImageAddPage> {
         if (pickedImage != null) {
           String imagePath = pickedImage.path;
           imageFileUint8List = await pickedImage.readAsBytes();
+
           // Remove background
+          imageFileUint8List = await ApiHelper().removeBackGround(imagePath);
+
           setState(() {
             imageFileUint8List;
           });
@@ -452,6 +468,61 @@ class imageAddPage extends State<ImageAddPage> {
     //   await Permission.storage.request();
     // }
 
+  }
+
+  validateFrom() async {
+    if (imageFileUint8List != null) {
+      if (sellerName.text.isNotEmpty &&
+          sellerPhone.text.isNotEmpty &&
+          itemName.text.isNotEmpty &&
+          itemPrice.text.isNotEmpty &&
+          itemDescription.text.isNotEmpty) {
+        setState(() {
+          isUploading = true;
+        });
+
+        String ImageUniqeName = DateTime.now().millisecondsSinceEpoch.toString();
+        fireBaseStore.Reference firebaseRef = fireBaseStore.FirebaseStorage.instance.ref().child("Item_Images").child(ImageUniqeName);
+        fireBaseStore.UploadTask uploadTaskImageFile = firebaseRef.putData(imageFileUint8List!, fireBaseStore.SettableMetadata(contentType: 'image/png'));
+
+        fireBaseStore.TaskSnapshot takeSnapshot = await uploadTaskImageFile.whenComplete(() {
+
+        });
+
+
+        await takeSnapshot.ref.getDownloadURL().then((imageURl) {
+          downLoadUrlUploadImage = imageURl;
+        });
+
+        String itemUniqueID = DateTime.now().millisecondsSinceEpoch.toString();
+        FirebaseFirestore.instance.collection("items").doc(itemUniqueID).set({
+          "itemID": itemUniqueID,
+          "sellerName": sellerName.text,
+          "sellerPhone": sellerPhone.text,
+          "itemName": itemName.text,
+          "itemPrice": itemPrice.text,
+          "itemDescription": itemDescription.text,
+          "itemImage": downLoadUrlUploadImage,
+          "publishedDate": DateTime.now(),
+          "status": "available",
+        });
+
+        Fluttertoast.showToast(msg: "Your new Item Uploaded Successfully");
+
+        setState(() {
+          isUploading = false;
+          imageFileUint8List = null;
+          downLoadUrlUploadImage = "";
+        });
+
+        Navigator.push(context, MaterialPageRoute(builder: (c)=> const HomeScreen()));
+
+      } else {
+        Fluttertoast.showToast(msg: "please fill all the form every form is mandatory");
+      }
+    } else {
+      Fluttertoast.showToast(msg: "Please select Image file");
+    }
   }
 
 }

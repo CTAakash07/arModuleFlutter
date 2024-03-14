@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "673945770049",
+    "project_id": "armoduleflutter",
+    "storage_bucket": "armoduleflutter.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:673945770049:android:880cec31b645b23a9f0ec0",
+        "android_client_info": {
+          "package_name": "com.example.testing_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCAwwU9cbwTM4IdVsjsYvyS-AuVwvBPtMY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -2,8 +2,15 @@ import 'package:arkit_plugin/arkit_plugin.dart';
 import 'package:flutter/material.dart';
 import 'package:testing_app/home_page.dart';
 import 'package:vector_math/vector_math_64.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() {
+Future<void> main() async {
+  try {
+    WidgetsFlutterBinding.ensureInitialized();
+    await Firebase.initializeApp();
+  } catch (e) {
+    print("Error while Implementing firebase is" + e.toString());
+  }
   runApp(const MyApp());
 }
 
